@@ -5,23 +5,23 @@
 # The new account forces password change on first login
 
 if [[ "$(id -u)" != 0 ]]; then
-    echo "Please run with sudo or as root"
+    echo 'Please run with sudo or as root'
     exit 1
 fi
 
-read -p "Enter the username to create: " USER_NAME
-read -p "Enter the name of the person or application that will be using this account: " COMMENT
-read -s -p "Enter the initial password for the account: " PASSWORD
+read -p 'Enter the username to create: ' USER_NAME
+read -p 'Enter the name of the person or application that will be using this account: ' COMMENT
+read -s -p 'Enter the initial password for the account: ' PASSWORD
 
 useradd --comment "$COMMENT" --create-home "$USER_NAME"
 if [[ "$?" -ne 0 ]]; then
-    echo "Cannot create account"
+    echo 'Cannot create account'
     exit 1
 fi
 
 echo "$PASSWORD" | passwd --stdin "$USER_NAME"
 if [[ "$?" -ne 0 ]]; then
-    echo "Cannot set password for account"
+    echo 'Cannot set password for account'
     exit 1
 fi
 
