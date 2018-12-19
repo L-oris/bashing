@@ -12,10 +12,10 @@ usage(){
 create_archive_directory(){
     mkdir "$ARCHIVE_DIRECTORY" >/dev/null 2>&1
     if [[ "$?" != 0 ]]; then
-        echo "Cannot create archive directory at: $ARCHIVE_DIRECTORY" >&2
+        echo "Cannot create archive directory for user $user at: $ARCHIVE_DIRECTORY" >&2
         exit 1
     fi
-    echo "Created archive directory at: $ARCHIVE_DIRECTORY"
+    echo "Created archive directory for user $user at: $ARCHIVE_DIRECTORY"
 }
 
 archive_home_directory(){
@@ -25,7 +25,7 @@ archive_home_directory(){
     local user_home_directory="/home/${user}"
     local archive_filename="${ARCHIVE_DIRECTORY}/${user}.tar.gz"
 
-    tar -czf "$archive_filename" "$user_home_directory"
+    tar -czf "$archive_filename" "$user_home_directory" >/dev/null 2>&1
     if [[ "$?" != 0 ]]; then
         echo "Cannot create archive for user: $user" >&2
         exit 1
@@ -39,6 +39,11 @@ delete_user(){
     local remove_home_directory="$2"
     if [[ user = '' ]]; then usage; fi
 
+    userdel $remove_home_directory $user
+    if [[ "$?" != 0 ]]; then
+        echo "Cannot delete user: $user" >&2
+        exit 1
+    fi
     echo "Deleted user $user"
 }
 
@@ -46,6 +51,11 @@ disable_user(){
     local user="$1"
     if [[ user = '' ]]; then usage; fi
 
+    chage -E 0 $user
+    if [[ "$?" != 0 ]]; then
+        echo "Cannot disable user: $user" >&2
+        exit 1
+    fi
     echo "Disabled user $user"
 }
 
