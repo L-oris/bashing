@@ -1,12 +1,24 @@
 #!/bin/env bash
 
-# This script disables an account
+# This script disables, deletes, and/or archives users on the local system
+
+
+##### CONSTANTS #####
 
 ARCHIVE_DIRECTORY='/user-archives'
 
+
+##### FUNCTIONS #####
+
 usage(){
-    echo "Usage: $(basename $0) [OPTIONS..] USER_NAME" >&2
-    exit 1
+cat << _EOF_
+Usage: ${0} [-dra] USER [USERN]...
+Disable an account
+    -a  Creates an archive of the home directory associated with the account(s)
+    -d  Deletes accounts instead of disabling them
+    -r  Removes the home directory associated with the account(s)
+_EOF_
+  exit 1
 }
 
 create_archive_directory(){
@@ -30,7 +42,6 @@ archive_home_directory(){
         echo "Cannot create archive for user: $user" >&2
         exit 1
     fi
-
     echo "Archived home directory at $archive_filename"
 }
 
@@ -59,6 +70,9 @@ disable_user(){
     echo "Disabled user $user"
 }
 
+
+##### MAIN #####
+
 if [[ $(id -u) != 0 ]]; then
     echo 'Please run with sudo or as root' >&2
     exit 1
@@ -81,7 +95,7 @@ if [[ "$#" < 1 ]]; then
     usage
 fi
 
-if [ ! -d "$ARCHIVE_DIRECTORY" ]; then
+if [[ ! -d "$ARCHIVE_DIRECTORY" ]]; then
     create_archive_directory
 fi
 
