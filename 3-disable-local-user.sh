@@ -22,7 +22,16 @@ archive_home_directory(){
     local user="$1"
     if [[ user = '' ]]; then usage; fi
 
-    echo "Archived home directory for user $user"
+    local user_home_directory="/home/${user}"
+    local archive_filename="${ARCHIVE_DIRECTORY}/${user}.tar.gz"
+
+    tar -czf "$archive_filename" "$user_home_directory"
+    if [[ "$?" != 0 ]]; then
+        echo "Cannot create archive for user: $user" >&2
+        exit 1
+    fi
+
+    echo "Archived home directory at $archive_filename"
 }
 
 delete_user(){
