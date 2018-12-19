@@ -2,9 +2,20 @@
 
 # This script disables an account
 
+ARCHIVE_DIRECTORY='/user-archives'
+
 usage(){
     echo "Usage: $(basename $0) [OPTIONS..] USER_NAME" >&2
     exit 1
+}
+
+create_archive_directory(){
+    mkdir "$ARCHIVE_DIRECTORY" >/dev/null 2>&1
+    if [[ "$?" != 0 ]]; then
+        echo "Cannot create archive directory at: $ARCHIVE_DIRECTORY" >&2
+        exit 1
+    fi
+    echo "Created archive directory at: $ARCHIVE_DIRECTORY"
 }
 
 archive_home_directory(){
@@ -49,6 +60,10 @@ shift "$(( OPTIND - 1 ))"
 
 if [[ "$#" < 1 ]]; then
     usage
+fi
+
+if [ ! -d "$ARCHIVE_DIRECTORY" ]; then
+    create_archive_directory
 fi
 
 for USER_NAME in "$@"; do
