@@ -5,7 +5,7 @@
 SERVER_LIST='/vagrant/servers'
 VERBOSE_MODE='false'
 DRY_RUN='false'
-EXIT_STATUS=0
+EXIT_STATUS='0'
 
 ##### FUNCTIONS #####
 
@@ -64,4 +64,4 @@ for SERVER in $(cat $SERVER_LIST); do
     fi
 done
 
-exit EXIT_STATUS
+exit $EXIT_STATUS
