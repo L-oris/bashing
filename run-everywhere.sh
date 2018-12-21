@@ -5,6 +5,7 @@
 SERVER_LIST='/vagrant/servers'
 VERBOSE_MODE='false'
 DRY_RUN='false'
+EXIT_STATUS=0
 
 ##### FUNCTIONS #####
 
@@ -17,7 +18,7 @@ usage(){
 
 if [[ "$(id -u)" = 0 ]]; then
     echo 'Please do not run command as super user; use -s option instead' >&2
-    exit 1
+    usage
 fi
 
 while getopts f:dsv OPTION; do
@@ -32,9 +33,11 @@ done
 
 # Remove options processed by 'getopts'
 shift "$(( OPTIND - 1 ))"
+
 if [[ "$#" -lt 1 ]]; then
     usage
 fi
+
 COMMAND="$@"
 
 if [[ ! -e "$SERVER_LIST" ]]; then
@@ -53,8 +56,12 @@ for SERVER in $(cat $SERVER_LIST); do
         continue
     fi
 
-    # login into server & run command
-    echo 'EXECUTE REAL SSH_COMMAND'
+    # Run SSH Command
+    $SSH_COMMAND
+    if [[ "$?" != 0 ]]; then
+        EXIT_STATUS="$?"
+        echo "Command exited with status $EXIT_STATUS on server: $SERVER" >&2
+    fi
 done
 
-exit 0
+exit EXIT_STATUS
