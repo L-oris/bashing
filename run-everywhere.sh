@@ -17,8 +17,8 @@ usage(){
 ##### MAIN #####
 
 if [[ "$(id -u)" = 0 ]]; then
-    echo 'Please do not run command as super user; use -s option instead' >&2
-    usage
+    echo 'Do not execute this script as root; use the -s option instead' >&2
+    exit 1
 fi
 
 while getopts f:dsv OPTION; do
@@ -41,7 +41,7 @@ fi
 COMMAND="$@"
 
 if [[ ! -e "$SERVER_LIST" ]]; then
-    echo 'Invalid server list provided' >&2
+    echo "Cannot open server list file: $SERVER_LIST" >&2
     exit 1
 fi
 
@@ -50,7 +50,9 @@ for SERVER in $(cat $SERVER_LIST); do
         echo "Server: $SERVER"
     fi
 
+    # With 'ConnectTimeout' option, the 'ssh' command doesn't hang for more than 2 seconds if a host is down
     SSH_COMMAND="ssh -o ConnectTimeout=2 $SERVER $SUDO $COMMAND"
+
     if [[ "$DRY_RUN" = 'true' ]]; then
         echo "Command: $SSH_COMMAND"
         continue
@@ -60,7 +62,7 @@ for SERVER in $(cat $SERVER_LIST); do
     $SSH_COMMAND
     if [[ "$?" != 0 ]]; then
         EXIT_STATUS="$?"
-        echo "Command exited with status $EXIT_STATUS on server: $SERVER" >&2
+        echo "Command on server: $SERVER failed with status $EXIT_STATUS" >&2
     fi
 done
 
