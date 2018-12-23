@@ -26,6 +26,7 @@ create_archive_directory(){
         echo "Cannot create archive directory at: $ARCHIVE_DIRECTORY" >&2
         exit 1
     fi
+
     echo "Created archive directory at: $ARCHIVE_DIRECTORY"
 }
 
@@ -36,11 +37,17 @@ archive_home_directory(){
     local user_home_directory="/home/${user}"
     local archive_filename="${ARCHIVE_DIRECTORY}/${user}.tar.gz"
 
+    if [[ ! -d "$user_home_directory" ]]; then
+        echo "$user_home_directory does not exist or is not a directory" >&2
+        exit 1
+    fi
+
     tar -czf "$archive_filename" "$user_home_directory" >/dev/null 2>&1
     if [[ "$?" != 0 ]]; then
         echo "Cannot create archive for user: $user" >&2
         exit 1
     fi
+
     echo "Archived home directory at $archive_filename"
 }
 
@@ -66,6 +73,7 @@ disable_user(){
         echo "Cannot disable user: $user" >&2
         exit 1
     fi
+
     echo "Disabled user $user"
 }
 
