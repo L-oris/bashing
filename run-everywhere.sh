@@ -10,8 +10,15 @@ EXIT_STATUS='0'
 ##### FUNCTIONS #####
 
 usage(){
-    echo 'Usage: something' >&2
-    exit 1
+cat << _EOF_
+Usage: $(basename $0) [-f FILE] [-dsv] COMMAND
+Executes COMMAND as a single command on every server
+    -f FILE  Use FILE for the list of servers. Default: ${SERVER_LIST}
+    -d       Dry run mode. Display the COMMAND that would have been executed and exit
+    -s       Execute the COMMAND using sudo on the remote server
+    -v       Verbose mode. Displays the server name before executing COMMAND
+_EOF_
+exit 1
 }
 
 ##### MAIN #####
@@ -46,8 +53,8 @@ if [[ ! -e "$SERVER_LIST" ]]; then
 fi
 
 for SERVER in $(cat $SERVER_LIST); do
-    if [[ "$VERBOSE" = 'true' ]]; then
-        echo "Server: $SERVER"
+    if [[ "$VERBOSE_MODE" = 'true' ]]; then
+        echo "Execute on server: $SERVER"
     fi
 
     # With 'ConnectTimeout' option, the 'ssh' command doesn't hang for more than 2 seconds if a host is down
