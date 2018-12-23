@@ -28,10 +28,10 @@ fi
 passwd --expire "$USER_NAME"
 
 cat << _EOF_
-User Successfully Created:
-* Username: ${USER_NAME}
-* Full Name: ${COMMENT}
-* Hostname: ${HOSTNAME}
+User successfully created:
+* Username: $USER_NAME
+* Full Name: $COMMENT
+* Hostname: $HOSTNAME
 _EOF_
 
 exit 0

@@ -11,8 +11,8 @@ ARCHIVE_DIRECTORY='/user-archives'
 ##### FUNCTIONS #####
 
 usage(){
-cat << _EOF_
-Usage: ${0} [-dra] USER [USERN]...
+cat >&2 << _EOF_
+Usage: $(basename $0) [-dra] USER [USERN]...
 Disable an account
     -a  Creates an archive of the home directory associated with the account(s)
     -d  Deletes accounts instead of disabling them

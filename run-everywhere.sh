@@ -10,7 +10,7 @@ EXIT_STATUS='0'
 ##### FUNCTIONS #####
 
 usage(){
-cat << _EOF_
+cat >&2 << _EOF_
 Usage: $(basename $0) [-f FILE] [-dsv] COMMAND
 Executes COMMAND as a single command on every server
     -f FILE  Use FILE for the list of servers. Default: ${SERVER_LIST}
