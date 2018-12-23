@@ -6,6 +6,9 @@
 ##### CONSTANTS #####
 
 ARCHIVE_DIRECTORY='/user-archives'
+ARCHIVE_HOME_DIRECTORY='false'
+REMOVE_HOME_DIRECTORY=''
+DELETE_USER='false'
 
 ##### FUNCTIONS #####
 

@@ -31,12 +31,12 @@ if [[ ! -e "$LOG_FILE" ]]; then
 fi
 
 echo 'Count,IP_Address'
-cat $LOG_FILE                                  | # log_file to stdout
-    grep 'Failed password'                     | # only lines containing 'Failed password'
-    grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" | # regex for IP Addresses
-    sort | uniq -c                             | # list how many occurrencies of each line (each IP Address)
-    sort -nr                                   | # sort occurrencies (most frequent to least frequent)
-    while read COUNT IP_ADDRESS                  # read line by line
+cat $LOG_FILE                                   | # log_file to stdout
+    grep 'Failed password'                      | # only lines containing 'Failed password'
+    grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"  | # regex for IP Addresses
+    sort | uniq -c                              | # list how many occurrencies of each line (each IP Address)
+    sort -nr                                    | # sort occurrencies (most frequent to least frequent)
+    while read COUNT IP_ADDRESS                   # read line by line
     do
         if [[ "$COUNT" -lt "$LIMIT" ]]; then 
           continue
