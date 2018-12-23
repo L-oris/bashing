@@ -11,14 +11,19 @@
 # 87,195.154.49.74
 # 57,180.128.252.1
 
+##### CONSTANTS #####
 
 LIMIT='10'
 LOG_FILE="${1}"
+
+##### FUNCTIONS #####
 
 usage(){
     echo "Usage: $(basename $0) LOG_FILE" >&2
     exit 1
 }
+
+##### MAIN #####
 
 if [[ ! -e "$LOG_FILE" ]]; then 
     echo "Cannot open log file: ${LOG_FILE}" >&2

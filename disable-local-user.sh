@@ -1,12 +1,11 @@
 #!/bin/env bash
 
 # This script disables, deletes, and/or archives users on the local system
-
+# To unlock a disabled user: change -E -1 USER
 
 ##### CONSTANTS #####
 
 ARCHIVE_DIRECTORY='/user-archives'
-
 
 ##### FUNCTIONS #####
 
