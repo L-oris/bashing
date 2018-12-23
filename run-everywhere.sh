@@ -67,9 +67,11 @@ for SERVER in $(cat $SERVER_LIST); do
 
     # Run SSH Command
     $SSH_COMMAND
-    if [[ "$?" != 0 ]]; then
-        EXIT_STATUS="$?"
-        echo "Command on server: $SERVER failed with status $EXIT_STATUS" >&2
+
+    SSH_EXIT_STATUS="$?"
+    if [[ "$SSH_EXIT_STATUS" != 0 ]]; then
+        EXIT_STATUS="$SSH_EXIT_STATUS" # Default value of '0' gets overwritten if anything goes wrong along the way
+        echo "Command on server: $SERVER failed with status $SSH_EXIT_STATUS" >&2
     fi
 done
 
