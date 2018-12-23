@@ -24,10 +24,10 @@ _EOF_
 create_archive_directory(){
     mkdir "$ARCHIVE_DIRECTORY" >/dev/null 2>&1
     if [[ "$?" != 0 ]]; then
-        echo "Cannot create archive directory for user $user at: $ARCHIVE_DIRECTORY" >&2
+        echo "Cannot create archive directory at: $ARCHIVE_DIRECTORY" >&2
         exit 1
     fi
-    echo "Created archive directory for user $user at: $ARCHIVE_DIRECTORY"
+    echo "Created archive directory at: $ARCHIVE_DIRECTORY"
 }
 
 archive_home_directory(){
@@ -103,7 +103,7 @@ for USER_NAME in "$@"; do
     echo "Processing user: $USER_NAME"
 
     if ! id "$USER_NAME" >/dev/null 2>&1; then
-        echo 'User not found' >&2
+        echo "User $USER_NAME not found" >&2
         exit 1
     fi
 
